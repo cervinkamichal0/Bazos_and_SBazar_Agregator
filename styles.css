@@ -1,0 +1,64 @@
+/* Resetování stylů pro seznam */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Styl pro každý inzerát v seznamu */
+#dynamicList li {
+    background-color: #f2f2f2;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+/* Styl pro nadpis inzerátu */
+#dynamicList li h2 {
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+/* Styl pro popis inzerátu */
+#dynamicList li p {
+    color: #555;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+/* Styl pro cenu inzerátu */
+#dynamicList li .price {
+    color: #d9534f; /* Barva pro cenu, např. červená */
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Styl pro lokaci inzerátu */
+#dynamicList li .location {
+    color: #777;
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+/* Styl pro obrázek inzerátu */
+#dynamicList li img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Styl pro vstupní pole a tlačítko */
+input, button {
+    margin-bottom: 10px;
+}
+
+/* Styl pro datum nahrání inzerátu */
+#dynamicList li .uploadDate {
+    color: #999;
+    font-size: 0.8em;
+    margin-bottom: 5px;
+}
+
+/* Další vlastní styly podle potřeby */
