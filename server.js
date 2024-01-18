@@ -2,10 +2,8 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 const express = require('express');
 let listingsBazos = [];
-let listingsAukro = [];
 let listingsSBazar = [];
 const app = express();
-const path = require('path');
 const cors = require('cors');
 
 app.use(cors());
@@ -47,24 +45,28 @@ app.get('/api/bazos/:id', async (req, res) => {
         const result = re.exec(listingsAmount);
         console.log(result[1]);
         console.log (Math.ceil(result[1]/20))
-        console.log(listingsAmount)
         let pages = Math.ceil(result[1] / 20);
         const promises = [];
         let strana = 20;
-        if (pages >= 100) {
-             pages = 99;
+        let pageDelay = 0;
+
+        if (pages > 50) {
+            pages = 50
         }
+
         for (let i = 0; i < pages; i++) {
-            let delay = 800;
+
+            await sleep (250);
+            if(i === pageDelay+50) {
+                pageDelay += 50
+                await sleep (5000);
+            }
 
             promises.push(
                 new Promise(resolve => {
                     setTimeout(async () => {
-
-
-                        strana = strana + 20;
-
-                        console.log('bazos request' + i);
+                        strana+=20
+                        console.log('bazos request' + i + ' | ' + strana);
                         const response = await axios('https://www.bazos.cz/search.php?hledat=' + searchTerm + '&hlokalita=&humkreis=25&cenaod=&cenado=&order=&crz=' + strana);
                         html = response.data;
                         $ = cheerio.load(html);
@@ -90,19 +92,18 @@ app.get('/api/bazos/:id', async (req, res) => {
                         });
 
                         resolve();
-                    }, delay);
+                    }, 250);
                 })
             );
         }
 
         await Promise.all(promises);
 
-        console.log(listingsBazos);
+        //console.log(listingsBazos);
         console.log(listingsBazos.length);
         res.json(listingsBazos);
     } catch (err) {
         console.log(err);
-        res.status(500).send('Internal Server Error');
     }
 });
 
@@ -143,18 +144,22 @@ app.get('/api/sbazar/:id', async (req, res) => {
         listingsAmount = listingsAmount.replace(/[()]/g, '');
 
 
-        const pages = Math.ceil(listingsAmount / 36);
+        var pages = Math.ceil(listingsAmount / 36);
         console.log(pages)
         const promises = [];
+        if (pages > 200){
+            pages = 200
+        }
 
-        for (let i = 2; i < pages; i++) {
-            let delay = 500;
+
+        for (let i = 2; i <= pages; i++) {
+
+            await sleep(100)
             promises.push(
                 new Promise(resolve => {
                     setTimeout(async () => {
-                        console.log(i)
 
-                        console.log('sbazar request');
+                        console.log('sbazar request: ' + i);
                         const response = await axios('https://www.sbazar.cz/hledej/' + searchTerm + '/0-vsechny-kategorie/cela-cr/cena-neomezena/nejnovejsi/' + i);
                         html = response.data;
                         $ = cheerio.load(html);
@@ -183,7 +188,7 @@ app.get('/api/sbazar/:id', async (req, res) => {
                         });
 
                         resolve();
-                    }, delay);
+                    }, 250);
                 })
             );
         }
@@ -191,7 +196,7 @@ app.get('/api/sbazar/:id', async (req, res) => {
         await Promise.all(promises);
 
 
-        console.log(listingsSBazar)
+        //console.log(listingsSBazar)
         console.log(listingsSBazar.length)
         console.log(listingsAmount);
         res.json(listingsSBazar);
@@ -203,96 +208,7 @@ app.get('/api/sbazar/:id', async (req, res) => {
 
 
 
-/*app.get('/api/sbazar/:id', async (req, res) => {
-try{
-    const searchTerm = req.params.id;
-    axios({
-        url: 'https://www.sbazar.cz/hledej/' + searchTerm + '/0-vsechny-kategorie/',
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        },
-    }).then( response => {
 
-        let html = response.data
-        let $ = cheerio.load(html)
-
-        listingsSBazar = [];
-
-        $('.c-item__group').each(function () {
-            const url = $(this).find('.c-item__link').attr('href');
-            const nadpis = $(this).find('.c-item__name-text').text().trim();
-            const cena = $(this).find('.c-price__price').text().trim();
-            const lokace = $(this).find('.c-item__locality').text().trim();
-            const img = $(this).find('.c-item__image img').attr('src');
-
-            listingsSBazar.push({
-                nadpis,
-                cena,
-                lokace,
-                img,
-                url
-
-            });
-        });
-
-        let listingsAmount = $('.c-bread-crumbs__items-count').text();
-        listingsAmount = listingsAmount.replace(/\s/g, '');
-        listingsAmount = listingsAmount.replace(/[()]/g, '');
-
-
-
-        console.log(listingsSBazar)
-        console.log(listingsSBazar.length)
-        console.log(listingsAmount);
-        res.json(listingsSBazar);
-    })
-}catch (err) {
-        console.log(err);
-        res.status(500).send('Internal Server Error');
-    }
-});
-*/
-
-
-
-
-/*app.get('/api/aukro/:id', (req, res) => {
-
-    const searchTerm = req.params.id;
-
-    axios({
-        url: 'https://aukro.cz/vysledky-vyhledavani?text=' + searchTerm + '&searchAll=true',
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        },
-    }).then(response => {
-
-        const html = response.data
-        const $ = cheerio.load(html)
-
-        listingsAukro = [];
-
-        $('.item-card-wrapper').each(function () {
-            const nadpis = $(this).find('.item-card-body-wrapper h2').text().trim();
-            const price = $(this).find('.item-card-body-wrapper .tw-text-xxl span').text().trim();
-            const countdown = $(this).find('.item-card-body-wrapper .auk-countdown-panel span').text().trim();
-
-            listingsAukro.push({
-                nadpis,
-                price,
-                countdown
-            });
-        });
-
-        console.log(html)
-        res.json(listingsAukro);
-
-
-    }).catch(err => {
-        console.log(err)
-    })
-})
-*/
 app.listen(8000, () => {
     console.log('Server is running on port 8000')
 })
