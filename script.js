@@ -1,24 +1,27 @@
-function bazosRespondCheck(listingsList) {
-    const bazosCount = listingsList.reduce(function (n, item) {
-        return n + (item.server === 'bazos');
-    }, 0);
-    console.log(bazosCount)
-    if (bazosCount === 0)
-    {
+function sortAds() {
 
+}
+function bazosRespondCheck(bazosListings, dynamicList) {
+    console.log('pocet inzerátu z Bazoše: ' + bazosListings.length)
+    if (bazosListings === 0)
+    {
         const errorText = document.createElement("p");
-        errorText.textContent = "Server bazoš přestal odpovídat na requesty. Zkuste to prosím znovu později více specifikovat vyhledávaný term  ín.";
+        errorText.textContent = "Server bazoš přestal odpovídat na requesty. Zkuste to prosím znovu později více specifikovat vyhledávaný termín.";
         errorText.style.color = "red";
         errorText.style.fontWeight = "bold";
+        errorText.style.fontSize = "1.2em";
         dynamicList.appendChild(errorText)
         return false;
     }
     return true;
 }
 
-function sortListings(listingsList, sortCriteria) {
+function sortListings(bazosListings,sbazarListings, sortCriteria) {
+    let listingsList = [];
     switch (sortCriteria) {
+
         case 'cheapest':
+            listingsList = bazosListings.concat(sbazarListings)
             for (let i = listingsList.length - 1; i >= 0; i--) {
                 const item = listingsList[i];
                 if (isNaN(item.cena)) {
@@ -27,7 +30,9 @@ function sortListings(listingsList, sortCriteria) {
             }
             listingsList.sort((a, b) => a.cena - b.cena);
             return listingsList;
+
         case 'mostExpensive':
+            listingsList = bazosListings.concat(sbazarListings)
             for (let i = listingsList.length - 1; i >= 0; i--) {
                 const item = listingsList[i];
                 if (isNaN(item.cena)) {
@@ -36,12 +41,38 @@ function sortListings(listingsList, sortCriteria) {
             }
             listingsList.sort((a, b) => b.cena - a.cena);
             return listingsList;
+
         case 'default':
+            let maxLength = 0
+            if (sbazarListings.length > bazosListings.length) {
+                maxLength = sbazarListings.length;
+            } else {
+                maxLength = bazosListings.length;
+            }
+
+            let i = 0
+            let bazosIndex = 0
+            let sbazarIdnex = 0
+            while(i < maxLength*2){
+                if (i%2 === 0 && sbazarIdnex < sbazarListings.length){
+                    listingsList.push(sbazarListings[sbazarIdnex]);
+                    sbazarIdnex++;
+                    i++;
+                }else{
+                    if(bazosIndex < bazosListings.length){
+                        listingsList.push(bazosListings[bazosIndex]);
+                        bazosIndex++
+                        i++;
+                    }else{
+                        i++;
+                    }
+                }
+            }
             return listingsList;
     }
 }
 
-function appendListings(listingsList) {
+function appendListings(listingsList,dynamicList) {
     listingsList.forEach(item => {
         const li = document.createElement('li');
         li.classList.add('bazos-list-item');
@@ -79,12 +110,14 @@ function submit() {
 }
 
 function onloadEvent(){
+
     const queryParams = new URLSearchParams(window.location.search);
     const sortCriteria = queryParams.get('sortCriteria');
     const searchTerm = queryParams.get('searchTerm');
     document.getElementById('sortCriteria').value = sortCriteria || 'default';
     document.getElementById('searchInput').value = searchTerm || '';
-
+    let bazosListings = [];
+    let sbazarListings = [];
     let listingsList = [];
 
     console.log(searchTerm);
@@ -100,7 +133,7 @@ function onloadEvent(){
         .then(data => {
             data.forEach(item => {
                 item.server = 'bazos';
-                listingsList.push(item);
+                bazosListings.push(item);
             });
 
         }).catch(error => console.error('Error fetching data:', error));
@@ -110,7 +143,7 @@ function onloadEvent(){
         .then(data => {
             data.forEach(item => {
                 item.server = 'sbazar';
-                listingsList.push(item);
+                sbazarListings.push(item);
             })
 
         }).catch(error => console.error('Error fetching data:', error));
@@ -120,16 +153,19 @@ function onloadEvent(){
 
     Promise.all(promises)
         .then(() => {
+            console.log(sbazarListings);
+            console.log(bazosListings);
 
-            console.log(listingsList);
             //Serazeni inzerátů podle kriterií
-            listingsList = sortListings(listingsList, sortCriteria);
+            listingsList = sortListings(bazosListings,sbazarListings, sortCriteria);
+            console.log(listingsList);
+            console.log('Počet inzerátů celkově: '+ listingsList.length);
 
             //Kontrola, jestli odpověděl Bazos na vsechny requesty
-            bazosRespondCheck(listingsList);
+            bazosRespondCheck(bazosListings,dynamicList);
 
             //Vlozeni inzeratu do DOMu
-            appendListings(listingsList);
+            appendListings(listingsList,dynamicList);
 
         })
         .catch(error => console.error('Error:', error));
