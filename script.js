@@ -1,6 +1,4 @@
-function sortAds() {
 
-}
 function bazosRespondCheck(bazosListings, dynamicList) {
     console.log('pocet inzerátu z Bazoše: ' + bazosListings.length)
     if (bazosListings === 0)
@@ -73,6 +71,7 @@ function sortListings(bazosListings,sbazarListings, sortCriteria) {
 }
 
 function appendListings(listingsList,dynamicList) {
+    dynamicList.innerHTML = '';
     listingsList.forEach(item => {
         const li = document.createElement('li');
         li.classList.add('bazos-list-item');
@@ -104,6 +103,7 @@ function submit() {
     queryParams.set('sortCriteria', sortCriteria);
     queryParams.set('searchTerm', searchTerm);
     const queryString = queryParams.toString();
+
     // Přesměrování na novou stránku s výsledky
     window.location.href = 'results.html?' + queryString;
 
@@ -116,11 +116,12 @@ function onloadEvent(){
     const searchTerm = queryParams.get('searchTerm');
     document.getElementById('sortCriteria').value = sortCriteria || 'default';
     document.getElementById('searchInput').value = searchTerm || '';
+
     let bazosListings = [];
     let sbazarListings = [];
     let listingsList = [];
 
-    console.log(searchTerm);
+    console.log('Hledaný výraz: ' + searchTerm);
 
     const dynamicList = document.getElementById('dynamicList');
     dynamicList.innerHTML = '';

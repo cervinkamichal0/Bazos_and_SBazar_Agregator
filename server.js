@@ -43,8 +43,8 @@ app.get('/api/bazos/:id', async (req, res) => {
         listingsAmount = listingsAmount.replace(/\s/g, '');
         const re = new RegExp("inzerátůz(\\d+)");
         const result = re.exec(listingsAmount);
-        console.log(result[1]);
-        console.log (Math.ceil(result[1]/20))
+        //console.log(result[1]);
+        console.log ('Počet stran pro hledaný výraz na Bazoši: ' + Math.ceil(result[1]/20))
         let pages = Math.ceil(result[1] / 20);
         const promises = [];
         let strana = 20;
@@ -66,7 +66,7 @@ app.get('/api/bazos/:id', async (req, res) => {
                 new Promise(resolve => {
                     setTimeout(async () => {
                         strana+=20
-                        console.log('bazos request' + i + ' | ' + strana);
+                        console.log('bazos request: ' + i + ' | ' + strana);
                         const response = await axios('https://www.bazos.cz/search.php?hledat=' + searchTerm + '&hlokalita=&humkreis=25&cenaod=&cenado=&order=&crz=' + strana);
                         html = response.data;
                         $ = cheerio.load(html);
@@ -100,7 +100,7 @@ app.get('/api/bazos/:id', async (req, res) => {
         await Promise.all(promises);
 
         //console.log(listingsBazos);
-        console.log(listingsBazos.length);
+        console.log('pocet scrapnutých inzerátů z Bazose: ' + listingsBazos.length);
         res.json(listingsBazos);
     } catch (err) {
         console.log(err);
@@ -144,8 +144,8 @@ app.get('/api/sbazar/:id', async (req, res) => {
         listingsAmount = listingsAmount.replace(/[()]/g, '');
 
 
-        var pages = Math.ceil(listingsAmount / 36);
-        console.log(pages)
+        let pages = Math.ceil(listingsAmount / 36);
+
         const promises = [];
         if (pages > 200){
             pages = 200
@@ -197,8 +197,7 @@ app.get('/api/sbazar/:id', async (req, res) => {
 
 
         //console.log(listingsSBazar)
-        console.log(listingsSBazar.length)
-        console.log(listingsAmount);
+        console.log('Počet inzerátů scrapnutých z Sbazaru: '+listingsSBazar.length)
         res.json(listingsSBazar);
     } catch (err) {
         console.log(err);
