@@ -129,7 +129,7 @@ function onloadEvent(){
     const promises = [];
 
 
-    const fetchBazos = fetch('http://ec2-13-49-145-48.eu-north-1.compute.amazonaws.com:8000/api/bazos/' + searchTerm)
+    const fetchBazos = fetch('http://ec2-13-49-145-48.eu-north-1.compute.amazonaws.com:7000/api/bazos/' + searchTerm)
         .then(response => response.json())
         .then(data => {
             data.forEach(item => {
@@ -139,7 +139,7 @@ function onloadEvent(){
 
         }).catch(error => console.error('Error fetching data:', error));
 
-    const fetchSbazar = fetch('http://ec2-13-49-145-48.eu-north-1.compute.amazonaws.com:8000/api/sbazar/' + searchTerm)
+    const fetchSbazar = fetch('http://ec2-13-49-145-48.eu-north-1.compute.amazonaws.com:7000/api/sbazar/' + searchTerm)
         .then(response => response.json())
         .then(data => {
             data.forEach(item => {

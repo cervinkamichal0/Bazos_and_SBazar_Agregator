@@ -220,6 +220,6 @@ const options = {
 };
 
 https.createServer(options, app)
-    .listen(80, function (req, res) {
-        console.log("HTTPS Server started at port 80");
+    .listen(7000, function (req, res) {
+        console.log("HTTPS Server started at port 7000");
     });
