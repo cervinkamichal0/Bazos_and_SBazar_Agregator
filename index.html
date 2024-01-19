@@ -10,21 +10,22 @@
     <script src="script.js"></script>
 </head>
 <body>
-<h1>Inzeraty</h1>
+<h1>Prohledávání inzerátů na Bazos.cz a Sbazar.cz</h1>
+<div class = "form">
 
-<label for="searchInput">Hledat: </label>
-<input type="text" id="searchInput">
-<button onclick="submit()">Submit</button>
+<input type="text" id="searchInput" placeholder="Zadejte hledaný výraz">
 
-<div>
-    <label for="sortCriteria">Řadit podle: </label>
-    <select id="sortCriteria" onchange="sortAds()">
-        <option value="default">Výchozí</option>
-        <option value="cheapest">Nejlevnější</option>
-        <option value="mostExpensive">Nejdražší</option>
 
-    </select>
+<label for="sortCriteria">Řazení: </label>
+<select id="sortCriteria">
+    <option value="default">Výchozí</option>
+    <option value="cheapest">Nejlevnější</option>
+    <option value="mostExpensive">Nejdražší</option>
+
+</select>
 </div>
+
+<button onclick="submit()">Odeslat</button>
 
 <ul id="dynamicList">
 

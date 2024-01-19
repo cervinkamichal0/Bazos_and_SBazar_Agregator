@@ -1,62 +1,99 @@
-/* Resetování stylů pro seznam */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f8f8f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.form {
+    margin: 15px;
+
+}
+.form input {
+    margin-right: 25px;
+    font-size: xx-large;
+}
 ul {
     list-style: none;
     padding: 0;
 }
 
-/* Styl pro každý inzerát v seznamu */
+#dynamicList {
+    width:80%;
+max-width: 755px;
+}
+
 #dynamicList li {
-    background-color: #f2f2f2;
+    background-color: #fff;
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Styl pro nadpis inzerátu */
 #dynamicList li h2 {
     color: #333;
     font-size: 1.2em;
     margin-bottom: 5px;
 }
 
-/* Styl pro popis inzerátu */
 #dynamicList li p {
     color: #555;
     font-size: 1em;
     margin-bottom: 10px;
 }
 
-/* Styl pro cenu inzerátu */
 #dynamicList li .price {
-    color: dodgerblue; /* Barva pro cenu, např. červená */
+    color: dodgerblue;
     font-size: 1.1em;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-/* Styl pro lokaci inzerátu */
 #dynamicList li .location {
     color: #777;
     font-size: 0.9em;
     margin-bottom: 5px;
 }
 
-/* Styl pro obrázek inzerátu */
 #dynamicList li img {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
     margin-bottom: 10px;
 }
-
-/* Styl pro vstupní pole a tlačítko */
-input, button {
+label{
+    font-size: xx-large;
+}
+input,
+button,
+#sortCriteria {
+    font-size: xx-large;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
     margin-bottom: 10px;
 }
 
-/* Styl pro datum nahrání inzerátu */
+button {
+    padding: 10px 322px;
+    background-color: dodgerblue;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #41abf8;
+}
+
 #dynamicList li .uploadDate {
     color: #999;
     font-size: 0.8em;
     margin-bottom: 5px;
 }
+
