@@ -5,6 +5,8 @@ let listingsBazos = [];
 let listingsSBazar = [];
 const app = express();
 const cors = require('cors');
+const https = require('https');
+const fs = require("fs");
 
 app.use(cors());
 function sleep(ms) {
@@ -209,5 +211,15 @@ app.get('/api/sbazar/:id', async (req, res) => {
 
 
 app.listen(8000, () => {
-    console.log('Server is running on port 8000')
+    console.log('HTTP Server is running on port 8000')
 })
+
+const options = {
+    key: fs.readFileSync("server.key"),
+    cert: fs.readFileSync("server.cert"),
+};
+
+https.createServer(options, app)
+    .listen(80, function (req, res) {
+        console.log("HTTPS Server started at port 80");
+    });
