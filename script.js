@@ -154,6 +154,8 @@ function onloadEvent(){
 
     Promise.all(promises)
         .then(() => {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'none';
             console.log(sbazarListings);
             console.log(bazosListings);
 
