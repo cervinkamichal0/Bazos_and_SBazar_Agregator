@@ -6,7 +6,7 @@ let listingsSBazar = [];
 const app = express();
 const cors = require('cors');
 
-const port = process.env.PORT || 3000;
+
 
 
 
@@ -214,7 +214,7 @@ app.get('/api/sbazar/:id', async (req, res) => {
 
 
 
-app.listen(port, '0.0.0.0',() => {
+app.listen(8000, () => {
     console.log('HTTP Server is running on port 80')
 })
 
