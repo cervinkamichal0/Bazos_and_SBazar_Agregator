@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "build": "npm i nodemon axios cheerio express cors",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",

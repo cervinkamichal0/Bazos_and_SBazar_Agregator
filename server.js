@@ -5,13 +5,6 @@ let listingsBazos = [];
 let listingsSBazar = [];
 const app = express();
 const cors = require('cors');
-
-
-
-
-
-
-
 app.use(cors());
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -215,7 +208,7 @@ app.get('/api/sbazar/:id', async (req, res) => {
 
 
 app.listen(8000, () => {
-    console.log('HTTP Server is running on port 80')
+    console.log('HTTP Server is running on port 8000')
 })
 
 
