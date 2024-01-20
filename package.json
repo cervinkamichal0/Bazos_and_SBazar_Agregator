@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "build": "npm i nodemon axios cheerio express cors",
+    "build": "i nodemon axios cheerio express cors",
     "start": "nodemon server.js"
   },
   "author": "",
