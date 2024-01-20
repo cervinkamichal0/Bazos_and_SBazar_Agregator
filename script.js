@@ -1,7 +1,7 @@
 
-function bazosRespondCheck(bazosListings, dynamicList) {
+function bazosResponseCheck(bazosListings, dynamicList) {
     console.log('pocet inzerátu z Bazoše: ' + bazosListings.length)
-    if (bazosListings === 0)
+    if (bazosListings.length === 0)
     {
         const errorText = document.createElement("p");
         errorText.textContent = "Server bazoš přestal odpovídat na requesty. Zkuste to prosím znovu později více specifikovat vyhledávaný termín.";
@@ -159,13 +159,14 @@ function onloadEvent(){
             console.log(sbazarListings);
             console.log(bazosListings);
 
+            //Kontrola, jestli odpověděl Bazos na vsechny requesty
+            bazosResponseCheck(bazosListings,dynamicList);
+
             //Serazeni inzerátů podle kriterií
             listingsList = sortListings(bazosListings,sbazarListings, sortCriteria);
             console.log(listingsList);
             console.log('Počet inzerátů celkově: '+ listingsList.length);
 
-            //Kontrola, jestli odpověděl Bazos na vsechny requesty
-            bazosRespondCheck(bazosListings,dynamicList);
 
             //Vlozeni inzeratu do DOMu
             appendListings(listingsList,dynamicList);
