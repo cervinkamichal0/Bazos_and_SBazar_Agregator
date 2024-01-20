@@ -208,8 +208,8 @@ app.get('/api/sbazar/:id', async (req, res) => {
 
 
 
-app.listen(8000, () => {
-    console.log('HTTP Server is running on port 8000')
+app.listen(80, '0.0.0.0',() => {
+    console.log('HTTP Server is running on port 80')
 })
 
 
