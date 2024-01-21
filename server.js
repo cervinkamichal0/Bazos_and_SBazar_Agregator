@@ -55,7 +55,7 @@ app.get('/api/bazos/:id', async (req, res) => {
 
         for (let i = 0; i < pages; i++) {
 
-            await sleep (250);
+            await sleep (150);
             if(i === pageDelay+50) {
                 pageDelay += 50
                 await sleep (5000);
@@ -146,8 +146,8 @@ app.get('/api/sbazar/:id', async (req, res) => {
         let pages = Math.ceil(listingsAmount / 36);
 
         const promises = [];
-        if (pages > 200){
-            pages = 200
+        if (pages > 50){
+            pages = 50
         }
 
 
