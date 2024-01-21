@@ -1,1 +1,1 @@
-BACK end aplikace běží na doméně bsscraper.fun
+Back end aplikace (server.js) běží na doméně bsscraper.fun
