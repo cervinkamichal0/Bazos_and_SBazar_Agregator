@@ -12,18 +12,22 @@
 </head>
 <body>
 <h1>Prohledávání inzerátů na Bazos.cz a Sbazar.cz</h1>
-<div class = "form">
+<div class="form">
+    <input type="text" id="searchInput" placeholder="Zadejte hledaný výraz">
 
-<input type="text" id="searchInput" placeholder="Zadejte hledaný výraz">
+    <label for="sortCriteria">Řazení: </label>
+    <select id="sortCriteria">
+        <option value="default">Výchozí</option>
+        <option value="cheapest">Nejlevnější</option>
+        <option value="mostExpensive">Nejdražší</option>
+    </select>
 
-
-<label for="sortCriteria">Řazení: </label>
-<select id="sortCriteria">
-    <option value="default">Výchozí</option>
-    <option value="cheapest">Nejlevnější</option>
-    <option value="mostExpensive">Nejdražší</option>
-
-</select>
+    <div class="priceInputs">
+        <input type="number" min="0" id="lowPriceInput" placeholder="Zadejte nejnižší cenu inzerátů">
+        <la>MAX</la>
+        <input type="number" min="0" id="maxPriceInput" placeholder="Zadejte nejvyšší cenu inzerátů">
+        <la>MIN</la>
+    </div>
 </div>
 
 <button onclick="submit()">Odeslat</button>

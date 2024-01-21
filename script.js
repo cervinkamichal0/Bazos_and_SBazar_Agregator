@@ -97,11 +97,15 @@ function appendListings(listingsList,dynamicList) {
 function submit() {
     const searchTerm = document.getElementById('searchInput').value;
     const sortCriteria = document.getElementById("sortCriteria").value;
+    const minPrice = document.getElementById('lowPriceInput').value;
+    const maxPrice = document.getElementById('maxPriceInput').value;
 
     // Vytvoření URL s parametry pro novou stránku
     const queryParams = new URLSearchParams();
     queryParams.set('sortCriteria', sortCriteria);
     queryParams.set('searchTerm', searchTerm);
+    queryParams.set('minPrice', minPrice);
+    queryParams.set('maxPrice', maxPrice);
     const queryString = queryParams.toString();
 
     // Přesměrování na novou stránku s výsledky

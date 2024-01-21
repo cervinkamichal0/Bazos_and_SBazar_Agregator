@@ -86,6 +86,25 @@ button,
     border-radius: 5px;
     margin-bottom: 10px;
 }
+.priceInputs {
+    display: inline-block;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+#lowPriceInput,
+#maxPriceInput {
+    font-size: x-large;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 390px;
+}
+
+.priceInputs la {
+    font-size: x-large;
+}
+
+
 
 button {
     padding: 10px 322px;

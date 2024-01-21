@@ -108,6 +108,118 @@ app.get('/api/bazos/:id', async (req, res) => {
 
 
 
+
+
+
+
+
+app.get('/api/sbazar/:id/min/:min/max/:max', async (req, res) => {
+    try {
+        listingsSBazar = [];
+        const searchTerm = req.params.id;
+        const minPrice = req.params.min;
+        const maxPrice = req.params.max;
+        console.log(minPrice, maxPrice, searchTerm);
+        const response = await axios( 'https://www.sbazar.cz/hledej/' + searchTerm + '/0-vsechny-kategorie/cela-cr/cena-od-'+ minPrice +'-do-' + maxPrice + '-kc?cena-dohodou=bez');
+        let html = response.data;
+        let $ = cheerio.load(html);
+
+
+        $('.c-item__group').each(function () {
+            const nadpis = $(this).find('.c-item__name-text').text().trim();
+            const popis = 'Více informací se dozvíte po otevření inzerátu';
+            const cena = $(this).find('.c-price__price').text().trim().replace(/\s/g,'')
+            const lokace = $(this).find('.c-item__locality').text().trim();
+            const datumVlozeni = '';
+            const img = $(this).find('.c-item__image img').attr('src');
+            const url = $(this).find('.c-item__link').attr('href');
+
+            listingsSBazar.push({
+                nadpis,
+                popis,
+                cena,
+                lokace,
+                datumVlozeni,
+                img,
+                url
+
+            });
+        });
+
+        let listingsAmount = $('.c-bread-crumbs__items-count').text();
+        listingsAmount = listingsAmount.replace(/\s/g, '');
+        listingsAmount = listingsAmount.replace(/[()]/g, '');
+
+
+        let pages = Math.ceil(listingsAmount / 36);
+
+        const promises = [];
+        if (pages > 50){
+            pages = 50
+        }
+
+
+        for (let i = 2; i <= pages; i++) {
+
+            await sleep(100)
+            promises.push(
+                new Promise(resolve => {
+                    setTimeout(async () => {
+
+                        console.log('sbazar request: ' + i);
+                        const response = await axios('https://www.sbazar.cz/hledej/' + searchTerm + '/0-vsechny-kategorie/cela-cr/cena-od-'+ minPrice +'-do-' + maxPrice + '-kc/nejnovejsi/' + i + '?cena-dohodou=bez');
+                        html = response.data;
+                        $ = cheerio.load(html);
+
+
+                        $('.c-item__group').each(function () {
+                            const nadpis = $(this).find('.c-item__name-text').text().trim();
+                            const popis = 'Více informací se dozvíte po otevření inzerátu';
+                            const cena = $(this).find('.c-price__price').text().trim().replace(/\s/g,'');
+                            const lokace = $(this).find('.c-item__locality').text().trim();
+                            const datumVlozeni = '';
+                            const img = $(this).find('.c-item__image img').attr('src');
+                            const url = $(this).find('.c-item__link').attr('href');
+
+
+                            listingsSBazar.push({
+                                nadpis,
+                                popis,
+                                cena,
+                                lokace,
+                                datumVlozeni,
+                                img,
+                                url
+
+                            });
+                        });
+
+                        resolve();
+                    }, 250);
+                })
+            );
+        }
+
+        await Promise.all(promises);
+
+
+        //console.log(listingsSBazar)
+        console.log('Počet inzerátů scrapnutých z Sbazaru: '+listingsSBazar.length)
+        res.json(listingsSBazar);
+    } catch (err) {
+        console.log(err);
+        res.status(404).send('Nenalazeny žádné inzeráty');
+    }
+});
+
+
+
+
+
+
+
+
+
 app.get('/api/sbazar/:id', async (req, res) => {
     try {
         listingsSBazar = [];
@@ -203,8 +315,6 @@ app.get('/api/sbazar/:id', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-
-
 
 
 app.listen(8000, () => {
